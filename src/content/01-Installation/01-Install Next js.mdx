@@ -1,5 +1,7 @@
 import { Steps, Step } from "@/components/ui/steps";
 import { BoxIcon } from "lucide-react";
+import CodeSnippet from "@/components/docs-ui/code-snippet";
+import { CodeBlock, FileName, Code } from "@/components/docs-ui/codeblock";
 
 export const metadata = {
   title: "Install Nextjs 15",
@@ -10,28 +12,18 @@ export const metadata = {
 
 ## Install Next.js 15
 
-Install Next.js with Create Next App
+<Steps>
+  <Step title="Create a new project">
+    <CodeSnippet
+  commands={[
+    { label: "npm", icon: "BoxIcon", code: "npx create-next-app@latest" },
+  ]}
+/>
+  </Step>
 
-    ```bash
-    npx create-next-app@latest
-    ```
+<Step title="On installation, you'll see the following prompts:"></Step>
 
-On installation, you'll see the following prompts:
-
-```bash
-What is your project named? my-app
-Would you like to use TypeScript? No / Yes
-Would you like to use ESLint? No / Yes
-Would you like to use Tailwind CSS? No / Yes
-Would you like to use `src/` directory? No / Yes
-Would you like to use App Router? (recommended) No / Yes
-Would you like to customize the default import alias (@/*)? No / Yes
-What import alias would you like configured? @/*
-```
-
-Start the app
-
-```bash
-cd my-app
-npm run dev
-```
+  <Step title="Install dependencies">
+    Navigate to your project directory and install the dependencies.
+  </Step>
+</Steps>
