@@ -1,0 +1,104 @@
+
+export const metadata = {
+  title: 'Another test post',
+  description: 'Demonstrating multiple posts',
+  date: '2025-03-18T12:00:00Z',
+  tags: ['writing'],
+}
+
+## Install Tailwind CSS
+
+Install Tailwind CSS with Next.js (v3 and v4)
+
+---
+
+## Tailwind CSS v4 Installation
+
+### Create your project
+
+```bash
+npx create-next-app@latest my-project --typescript --eslint
+cd my-project
+```
+
+
+### Install Tailwind CSS
+
+```bash
+npm install tailwindcss @tailwindcss/postcss @tailwindcss/cli
+```
+
+
+### Create your CSS file
+
+Create a new CSS file (e.g., `app/globals.css`) and add the Tailwind import:
+
+**app/globals.css**
+
+```css
+@import "tailwindcss";
+```
+
+### Configure PostCSS 
+
+Update your post CSS
+
+**postcss.config.js**
+
+```css 
+module.exports = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+```
+
+## Tailwind CSS v3 Installation
+
+### Create your project 
+
+```bash
+npx create-next-app@latest my-project --typescript --eslint
+cd my-project
+```
+
+### Install Tailwind CSS 
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+### Configure your template path
+
+**tailwind.config.ts**
+
+```css
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+ 
+    // Or if using `src` directory:
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+### Add the Tailwind directives to your CSS 
+
+**globals.css**
+
+```css 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+

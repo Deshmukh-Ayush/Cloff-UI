@@ -1,0 +1,29 @@
+export const metadata = {
+  title: 'Utilities',
+  description: 'Add utilities for using Cloff UI',
+  date: '2025-03-18T12:00:00Z',
+  tags: ['writing'],
+}
+
+## Add Utilities 
+
+Utilities for using Cloff UI 
+
+### Install dependencies 
+
+```bash
+npm i motion clsx tailwind-merge
+```
+
+### Add utils file 
+
+**lib/utils.ts**
+
+```css
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+ 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
