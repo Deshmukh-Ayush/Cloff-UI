@@ -2,16 +2,17 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { META_THEME_COLORS, siteConfig } from "@/config/site";
+import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from "@/components/ui/navbar";
 
 const inter = Inter({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`
+    template: `%s - ${siteConfig.name}`,
   },
   metadataBase: new URL(siteConfig.url),
   description: siteConfig.description,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: META_THEME_COLORS.light,
-}
+};
 
 export default function RootLayout({
   children,
@@ -45,10 +46,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} antialiased`}
-      >
-        {children}
+      <body className={`${inter.className} antialiased`}>
+        <ThemeProvider>
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

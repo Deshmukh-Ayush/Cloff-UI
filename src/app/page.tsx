@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen items-center justify-center dark:bg-black">
       <p>Cooking.....</p>
     </div>
   );
