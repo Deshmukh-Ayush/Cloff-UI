@@ -4,7 +4,7 @@ import Link from "next/link";
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     h1: (props) => (
-      <h1 className="mt-8 mb-4 text-6xl font-semibold" {...props} />
+      <h1 className="mt-8 mb-4 text-6xl font-semibold dark:text-neutral-100" {...props} />
     ),
     h2: (props) => (
       <h2
@@ -13,15 +13,15 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       />
     ),
     h3: (props) => (
-      <h3 className="mt-5 mb-2 text-xl font-semibold" {...props} />
+      <h3 className="mt-5 mb-2 text-xl font-semibold text-neutral-700 dark:text-neutral-300" {...props} />
     ),
     p: (props) => (
-      <p className="my-4 text-neutral-500 dark:text-neutral-300" {...props} />
+      <p className="my-4 text-neutral-700 dark:text-neutral-300" {...props} />
     ),
     a: (props) => (
       <Link
         {...props}
-        className="text-blue-600 hover:underline dark:text-blue-400"
+        className="text-neutral-700 dark:text-neutral-300"
       />
     ),
     ul: (props) => <ul className="my-4 list-disc pl-6" {...props} />,
