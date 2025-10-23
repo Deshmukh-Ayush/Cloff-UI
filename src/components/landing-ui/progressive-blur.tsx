@@ -11,7 +11,7 @@ type ProgressiveBlurProps = {
 
 export const ProgressiveBlur = ({
   className = "",
-  backgroundColor = "#ffffff",
+  backgroundColor = "rgb(255 255 255)",
   position = "top",
   height = "150px",
   width = "250px",
@@ -25,6 +25,7 @@ export const ProgressiveBlur = ({
   let style: React.CSSProperties = {
     height: isTop || isBottom ? height : "100%",
     width: isLeft || isRight ? width : "100%",
+    // Keep the background gradient for better blur
     background: isTop
       ? `linear-gradient(to top, transparent, ${backgroundColor})`
       : isBottom

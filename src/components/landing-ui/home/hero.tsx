@@ -1,8 +1,8 @@
+"use client";
+
 import { Newsreader } from "next/font/google";
-import Link from "next/link";
 import React from "react";
-import { cn } from "@/lib/utils";
-import { NeumorphButton } from "../button";
+import GlowButton from "@/components/ui/glow-button";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -15,15 +15,15 @@ export const Hero = () => {
         className={`${newsreader.className} text-center text-7xl leading-16 tracking-tight`}
       >
         <span className="bg-gradient-to-br from-[#70D9FF] to-[#00A4DF] bg-clip-text text-transparent">
-          Interactivity
+          Micro-Interactions
         </span>{" "}
-        at your <br /> finger-tips.
+        <br /> at your finger-tips.
       </h2>
       <p className="text-1xl mt-4 text-center text-neutral-400">
         The only shadcn component library <br /> you'll ever need to make your
         website interactive and seamless.
       </p>
-      <NeumorphButton>Browse Components</NeumorphButton>
+      <GlowButton>Browse Components</GlowButton>
     </div>
   );
 };

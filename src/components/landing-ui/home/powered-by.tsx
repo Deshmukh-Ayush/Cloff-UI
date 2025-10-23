@@ -11,20 +11,19 @@ const newsreader = Newsreader({
 const groups = [
   [
     { src: "next-logo.png", alt: "nextjs-logo" },
-    { src: "tailwind.svg", alt: "react-logo" },
-    { src: "framer-motion.svg", alt: "tailwind-logo" },
+    { src: "tailwind.svg", alt: "tailwind" },
+    { src: "framer-motion.svg", alt: "framer motion logo" },
   ],
   [
     { src: "react-logo.svg", alt: "node-logo" },
-    { src: "shadcn-ui.svg", alt: "prisma-logo" },
-    { src: "next-logo.png", alt: "postgres-logo" },
+    { src: "shadcn-ui.svg", alt: "shadcn-ui" },
+    { src: "next-logo.png", alt: "next-logo" },
   ],
 ];
 
 export const PoweredBy = () => {
   const [index, setIndex] = useState(0);
 
-  // Switch group every 5s
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % groups.length);
@@ -32,12 +31,12 @@ export const PoweredBy = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const currentGroup = groups[index] ?? []; // ✅ safe fallback
+  const currentGroup = groups[index] ?? [];
 
   return (
     <div className="flex max-h-screen flex-col items-center gap-20 border-b border-dashed border-neutral-300 py-10 dark:border-neutral-700">
       <h1
-        className={`${newsreader.className} text-4xl tracking-tight text-neutral-800`}
+        className={`${newsreader.className} text-4xl tracking-tight text-neutral-800 dark:text-neutral-100`}
       >
         Powered By
       </h1>
@@ -57,7 +56,7 @@ export const PoweredBy = () => {
                 key={i}
                 src={icon.src}
                 alt={icon.alt}
-                className="w-[60px] grayscale"
+                className="w-[60px] saturate-100"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.2, duration: 0.3 }}

@@ -61,32 +61,32 @@ export const InspiredBy = () => {
   return (
     <div className="flex max-h-screen flex-col items-center gap-20 py-10">
       <h1
-        className={`${newsreader.className} text-4xl tracking-tight text-neutral-800`}
+        className={`${newsreader.className} text-4xl tracking-tight text-neutral-800 dark:text-neutral-200`}
       >
         Inspired By
       </h1>
-      <p className="text-center text-neutral-500">
+      <p className="text-center text-neutral-500 dark:text-neutral-300">
         Special thanks to{" "}
-        <span className="text-neutral-800">
+        <span className="bg-gradient-to-br from-[#70D9FF] to-[#00A4DF] bg-clip-text text-transparent">
           <Link href="https://x.com/Hiteshdotcom" target="_blank">
             Hitesh Sir,
           </Link>
         </span>{" "}
-        <span className="text-neutral-800">
+        <span className="bg-gradient-to-br from-[#70D9FF] to-[#00A4DF] bg-clip-text text-transparent">
           <Link href="https://x.com/mannupaaji" target="_blank">
             {" "}
             Manu Paaji
           </Link>
           ,
         </span>{" "}
-        <span className="text-neutral-800">
+        <span className="bg-gradient-to-br from-[#70D9FF] to-[#00A4DF] bg-clip-text text-transparent">
           <Link href="https://x.com/kirat_tw" target="_blank">
             {" "}
             Harkirat{" "}
           </Link>
         </span>{" "}
         and
-        <span className="text-neutral-800">
+        <span className="bg-gradient-to-br from-[#70D9FF] to-[#00A4DF] bg-clip-text text-transparent">
           <Link href="https://x.com/harshbhaiyaa" target="_blank">
             {" "}
             Harsh Bhaiya
@@ -96,7 +96,6 @@ export const InspiredBy = () => {
       </p>
 
       <div className="relative w-full overflow-hidden py-10">
-        {/* Content layer */}
         <div className="relative z-0">
           <InfiniteSlider className="flex h-full w-full items-center">
             {people.map((gen, href) => (
@@ -112,14 +111,28 @@ export const InspiredBy = () => {
           </InfiniteSlider>
         </div>
 
-        {/* Blur overlay layers (positioned above content) */}
+        {/* Blur overlay layers for light mode */}
         <ProgressiveBlur
           position="left"
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[200px]"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[200px] dark:hidden"
+          backgroundColor="rgb(255 255 255)"
         />
         <ProgressiveBlur
           position="right"
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[200px]"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[200px] dark:hidden"
+          backgroundColor="rgb(255 255 255)"
+        />
+
+        {/* Blur overlay layers for dark mode */}
+        <ProgressiveBlur
+          position="left"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-[200px] dark:block"
+          backgroundColor="rgb(0 0 0)"
+        />
+        <ProgressiveBlur
+          position="right"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-[200px] dark:block"
+          backgroundColor="rgb(0 0 0)"
         />
       </div>
     </div>
