@@ -22,7 +22,7 @@ export const ProgressiveBlur = ({
   const isLeft = position === "left";
   const isRight = position === "right";
 
-  let style: React.CSSProperties = {
+  const style: React.CSSProperties = {
     height: isTop || isBottom ? height : "100%",
     width: isLeft || isRight ? width : "100%",
     // Keep the background gradient for better blur
@@ -44,12 +44,11 @@ export const ProgressiveBlur = ({
     backdropFilter: `blur(${blurAmount})`,
     WebkitUserSelect: "none",
     userSelect: "none",
+    ...(isTop && { top: 0 }),
+    ...(isBottom && { bottom: 0 }),
+    ...(isLeft && { left: 0 }),
+    ...(isRight && { right: 0 }),
   };
-
-  if (isTop) style.top = 0;
-  if (isBottom) style.bottom = 0;
-  if (isLeft) style.left = 0;
-  if (isRight) style.right = 0;
 
   return (
     <div

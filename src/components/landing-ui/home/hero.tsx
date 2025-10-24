@@ -20,8 +20,8 @@ export const Hero = () => {
         <br /> at your finger-tips.
       </h2>
       <p className="text-1xl mt-4 text-center text-neutral-400">
-        The only shadcn component library <br /> you'll ever need to make your
-        website interactive and seamless.
+        The only shadcn component library <br /> you&apos;ll ever need to make
+        your website interactive and seamless.
       </p>
       <GlowButton>Browse Components</GlowButton>
     </div>

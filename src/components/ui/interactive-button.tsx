@@ -2,7 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
-import { useState, useEffect, MouseEvent, ButtonHTMLAttributes } from "react";
+import {
+  useState,
+  useEffect,
+  MouseEvent,
+  ButtonHTMLAttributes,
+  useCallback,
+} from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
@@ -35,18 +41,7 @@ export default function InteractiveButton({
     "idle" | "loading" | "success" | "failure"
   >("idle");
 
-  useEffect(() => {
-    if (!clickEnter) return;
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === "Enter" && state === "idle") {
-        handleClickInternal();
-      }
-    };
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [clickEnter, state]);
-
-  const handleClickInternal = async () => {
+  const handleClickInternal = useCallback(async () => {
     if (state !== "idle") return;
     setState("loading");
     try {
@@ -63,7 +58,7 @@ export default function InteractiveButton({
           setTimeout(() => {
             setState("idle");
           }, resetDelay);
-        } catch (error) {
+        } catch {
           setState("failure");
           if (onFailure) {
             await onFailure();
@@ -73,7 +68,7 @@ export default function InteractiveButton({
           }, resetDelay);
         }
       }, loadingDuration);
-    } catch (error) {
+    } catch {
       setState("failure");
       if (onFailure) {
         await onFailure();
@@ -82,7 +77,18 @@ export default function InteractiveButton({
         setState("idle");
       }, resetDelay);
     }
-  };
+  }, [state, onClick, onSuccess, onFailure, loadingDuration, resetDelay]);
+
+  useEffect(() => {
+    if (!clickEnter) return;
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "Enter" && state === "idle") {
+        handleClickInternal();
+      }
+    };
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [clickEnter, state, handleClickInternal]);
 
   const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     if (state !== "idle") return;
@@ -100,7 +106,7 @@ export default function InteractiveButton({
           setTimeout(() => {
             setState("idle");
           }, resetDelay);
-        } catch (error) {
+        } catch {
           setState("failure");
           if (onFailure) {
             await onFailure();
@@ -110,7 +116,7 @@ export default function InteractiveButton({
           }, resetDelay);
         }
       }, loadingDuration);
-    } catch (error) {
+    } catch {
       setState("failure");
       if (onFailure) {
         await onFailure();
@@ -121,6 +127,7 @@ export default function InteractiveButton({
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
     onDrag,
     onDragStart,
