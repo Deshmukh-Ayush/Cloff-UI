@@ -1,33 +1,47 @@
-import Link from "next/link";
-import { getDocsSidebar } from "@/lib/docs";
+"use client";
 
-export default async function Sidebar() {
-  const sidebar = await getDocsSidebar();
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { docsConfig } from "@/lib/docs";
+import { cn } from "@/lib/utils";
+
+export function Sidebar() {
+  const pathname = usePathname();
 
   return (
-    <nav className="h-full overflow-y-auto p-4 pt-[90px]">
-      {Object.entries(sidebar).map(([heading, pages]) => (
-        <div key={heading} className="mb-4">
-          <h3 className="px-2 text-sm font-semibold text-black capitalize dark:text-white">
-            {heading}
-          </h3>
-          <ul className="mt-2 space-y-1">
-            {pages.map((page) => {
-              const href = `/components/${page.slugSegments.join("/")}`;
-              return (
-                <li key={page.filePath}>
-                  <Link
-                    href={href}
-                    className="hover:bg-muted hover:text-foreground block rounded px-2 py-1 text-sm text-neutral-500"
-                  >
-                    {page.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
-    </nav>
+    <aside className="bg-background fixed top-0 left-0 z-30 h-screen w-54">
+      <div className="h-full overflow-y-auto px-6 py-26">
+        {/* Navigation */}
+        <nav className="space-y-6">
+          {docsConfig.map((section) => (
+            <div key={section.title}>
+              <h4 className="text-foreground mb-2 text-sm font-semibold">
+                {section.title}
+              </h4>
+              <ul className="space-y-1">
+                {section.items.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "block rounded-md px-1 py-1 text-sm transition-all duration-200 ease-in-out",
+                          isActive
+                            ? "bg-primary text-neutral-950 dark:text-neutral-50"
+                            : "text-neutral-800 hover:bg-gray-100/50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-gray-800/50 dark:hover:text-neutral-100",
+                        )}
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </div>
+    </aside>
   );
 }
