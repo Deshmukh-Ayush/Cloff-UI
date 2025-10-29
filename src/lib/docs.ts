@@ -20,6 +20,8 @@ export const docsConfig: NavSection[] = [
   },
   {
     title: "Components",
-    items: [{ title: "Button", href: "/components/button" }],
+    items: [
+      { title: "Interactive Button", href: "/components/interactive-button" },
+    ],
   },
 ];
