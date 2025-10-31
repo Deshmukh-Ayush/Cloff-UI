@@ -12,7 +12,7 @@ import {
 import { PropsTable } from "@/components/docs-ui/props-table";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Step, Steps } from "@/components/ui/steps";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import InteractiveButton from "@/registry/new-york/items/interactive-button/components/interactive-button";
 import { useState } from "react";
 
 export default function Page() {
@@ -83,9 +83,7 @@ export default function Page() {
 
         <PreviewContent value="preview">
           <div className="text-center">
-            <button className="rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600">
-              Interactive Button
-            </button>
+            <InteractiveButton>Click Me</InteractiveButton>
           </div>
         </PreviewContent>
 
