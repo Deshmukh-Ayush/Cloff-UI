@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Check, Copy } from "lucide-react";
 
-// Base Snippet component using composition pattern
+// Base Snippet component
 export const Snippet = ({
   children,
   className = "",
@@ -11,7 +11,7 @@ export const Snippet = ({
 }) => {
   return (
     <div
-      className={`flex flex-col gap-0 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 ${className}`}
+      className={`flex flex-col gap-0 overflow-hidden rounded-lg border border-neutral-300 bg-white text-neutral-800 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 ${className}`}
     >
       {children}
     </div>
@@ -31,14 +31,22 @@ const SnippetTab = ({
   return (
     <button
       onClick={onClick}
-      className={`border-r border-neutral-800 px-3 py-2 text-sm font-medium transition-colors ${
+      className={`px-3 py-2 text-sm font-medium transition-colors ${
         active
-          ? "bg-neutral-800 text-white"
-          : "bg-neutral-900 text-neutral-400 hover:text-neutral-300"
+          ? "bg-gray-200 text-gray-900 dark:bg-neutral-800 dark:text-white"
+          : "bg-white text-gray-500 hover:text-gray-700 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
       }`}
     >
       {children}
     </button>
+  );
+};
+
+const SnippetHeader = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="flex items-center justify-between border-b border-neutral-300 bg-gray-50 dark:border-neutral-800 dark:bg-neutral-900">
+      {children}
+    </div>
   );
 };
 
@@ -57,7 +65,7 @@ const SnippetContent = ({
 }) => {
   return (
     <code
-      className={`flex-1 px-4 py-2 font-mono text-sm text-neutral-100 ${className}`}
+      className={`block bg-gray-50 px-4 py-3 font-mono text-sm text-gray-800 dark:bg-neutral-900 dark:text-neutral-100 ${className}`}
     >
       {children}
     </code>
@@ -75,7 +83,7 @@ const SnippetAction = ({
   return (
     <button
       onClick={onCopy}
-      className="border-l border-neutral-800 px-3 py-2 text-neutral-400 transition-colors hover:text-neutral-100"
+      className="px-3 py-2 text-gray-500 transition-colors hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-100"
       aria-label="Copy to clipboard"
     >
       {copied ? <Check size={16} /> : <Copy size={16} />}
@@ -84,6 +92,7 @@ const SnippetAction = ({
 };
 
 // Attach subcomponents to main component
+Snippet.Header = SnippetHeader;
 Snippet.Tabs = SnippetTabs;
 Snippet.Tab = SnippetTab;
 Snippet.Content = SnippetContent;

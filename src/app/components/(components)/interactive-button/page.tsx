@@ -14,8 +14,8 @@ import { Step, Steps } from "@/components/ui/steps";
 import { useState } from "react";
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState<"npm" | "yarn" | "pnpm" | "bun">(
-    "bun",
+  const [activeTab, setActiveTab] = useState<"pnpm" | "npm" | "yarn" | "bun">(
+    "npm",
   );
   const [copied, setCopied] = useState(false);
 
@@ -27,9 +27,9 @@ export default function Page() {
           </div> `;
 
   const commands = {
+    pnpm: "pnpm dlx next-forge@latest init",
     npm: "npx next-forge@latest init",
     yarn: "yarn dlx next-forge@latest init",
-    pnpm: "pnpm dlx next-forge@latest init",
     bun: "bunx next-forge@latest init",
   } as const;
 
@@ -75,21 +75,24 @@ export default function Page() {
         <Steps>
           <Step title="Run the following command">
             <Snippet>
-              <Snippet.Tabs>
-                {(Object.keys(commands) as Array<keyof typeof commands>).map(
-                  (pm) => (
-                    <Snippet.Tab
-                      key={pm}
-                      active={activeTab === pm}
-                      onClick={() => setActiveTab(pm)}
-                    >
-                      {pm}
-                    </Snippet.Tab>
-                  ),
-                )}
-              </Snippet.Tabs>
+              <Snippet.Header>
+                <Snippet.Tabs>
+                  {(Object.keys(commands) as Array<keyof typeof commands>).map(
+                    (pm) => (
+                      <Snippet.Tab
+                        key={pm}
+                        active={activeTab === pm}
+                        onClick={() => setActiveTab(pm)}
+                      >
+                        {pm}
+                      </Snippet.Tab>
+                    ),
+                  )}
+                </Snippet.Tabs>
+                <Snippet.Action onCopy={handleCopy} copied={copied} />
+              </Snippet.Header>
+
               <Snippet.Content>{commands[activeTab]}</Snippet.Content>
-              <Snippet.Action onCopy={handleCopy} copied={copied} />
             </Snippet>
           </Step>
         </Steps>
