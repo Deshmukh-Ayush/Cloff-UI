@@ -9,6 +9,7 @@ import {
   PreviewTab,
   PreviewTabs,
 } from "@/components/docs-ui/preview";
+import { PropsTable } from "@/components/docs-ui/props-table";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Step, Steps } from "@/components/ui/steps";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -26,6 +27,34 @@ export default function Page() {
               Interactive Button
             </button>
           </div> `;
+
+  const propsData = [
+    {
+      prop: "children",
+      type: "React.ReactNode",
+      default: "undefined",
+      description: "The content to be rendered within the gradient background.",
+    },
+    {
+      prop: "className",
+      type: "string",
+      default: "undefined",
+      description: "The CSS class to be applied to the inner div.",
+    },
+    {
+      prop: "containerClassName",
+      type: "string",
+      default: "undefined",
+      description: "The CSS class to be applied to the outermost div.",
+    },
+    {
+      prop: "animate",
+      type: "boolean",
+      default: "true",
+      description:
+        "Determines whether the gradient background should animate. If false, the gradient background will be static.",
+    },
+  ];
 
   const commands = {
     pnpm: "pnpm dlx shadcn@latest  init",
@@ -100,6 +129,30 @@ export default function Page() {
         </Steps>
 
         <SubHeading className="mt-10">Props</SubHeading>
+        <PropsTable className="mt-10">
+          <PropsTable.Header>
+            <PropsTable.HeaderCell>Prop</PropsTable.HeaderCell>
+            <PropsTable.HeaderCell>Type</PropsTable.HeaderCell>
+            <PropsTable.HeaderCell>Default</PropsTable.HeaderCell>
+            <PropsTable.HeaderCell>Description</PropsTable.HeaderCell>
+          </PropsTable.Header>
+          <PropsTable.Body>
+            {propsData.map((prop, index) => (
+              <PropsTable.Row key={index}>
+                <PropsTable.Cell>
+                  <PropsTable.Code>{prop.prop}</PropsTable.Code>
+                </PropsTable.Cell>
+                <PropsTable.Cell>
+                  <PropsTable.Code>{prop.type}</PropsTable.Code>
+                </PropsTable.Cell>
+                <PropsTable.Cell>
+                  <PropsTable.Code>{prop.default}</PropsTable.Code>
+                </PropsTable.Cell>
+                <PropsTable.Cell>{prop.description}</PropsTable.Cell>
+              </PropsTable.Row>
+            ))}
+          </PropsTable.Body>
+        </PropsTable>
       </div>
     </div>
   );

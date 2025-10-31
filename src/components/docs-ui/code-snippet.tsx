@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Base Snippet component
 export const Snippet = ({
@@ -11,7 +12,10 @@ export const Snippet = ({
 }) => {
   return (
     <div
-      className={`flex flex-col gap-0 overflow-hidden rounded-lg border border-neutral-300 bg-white text-neutral-800 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 ${className}`}
+      className={cn(
+        "flex flex-col gap-0 overflow-hidden rounded-lg border border-neutral-300 bg-white text-neutral-800 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100",
+        className,
+      )}
     >
       {children}
     </div>
