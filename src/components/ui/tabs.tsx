@@ -1,66 +1,87 @@
-"use client"
+"use client";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
-import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
+type TabsContextType = {
+  activeTab: string;
+  setActiveTab: (value: string) => void;
+};
 
-import { cn } from "@/lib/utils"
+const TabsContext = createContext<TabsContextType | null>(null);
 
-function Tabs({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+export const Tabs = ({
+  defaultValue,
+  children,
+  className = "",
+}: {
+  defaultValue: string;
+  children: ReactNode;
+  className?: string;
+}) => {
+  const [activeTab, setActiveTab] = useState(defaultValue);
+
   return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
-      {...props}
-    />
-  )
-}
+    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+      <div
+        className={`flex flex-col gap-0 overflow-hidden rounded-lg text-neutral-800 dark:text-neutral-100 ${className}`}
+      >
+        {children}
+      </div>
+    </TabsContext.Provider>
+  );
+};
 
-function TabsList({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
+// TabsList (header section)
+export const TabsList = ({ children }: { children: ReactNode }) => {
+  return <div className="inline-flex">{children}</div>;
+};
+
+// Individual Tab Button
+export const TabsTrigger = ({
+  value,
+  children,
+}: {
+  value: string;
+  children: ReactNode;
+}) => {
+  const ctx = useContext(TabsContext);
+  if (!ctx) throw new Error("TabsTrigger must be used within <Tabs>");
+
+  const isActive = ctx.activeTab === value;
+
   return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
-      className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
-        className
-      )}
-      {...props}
-    />
-  )
-}
+    <button
+      onClick={() => ctx.setActiveTab(value)}
+      className={`px-4 py-2 text-sm font-medium transition-colors ${
+        isActive
+          ? "bg-gray-200 text-gray-900 dark:bg-neutral-800 dark:text-white"
+          : "bg-white text-gray-500 hover:text-gray-800 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200"
+      }`}
+    >
+      {children}
+    </button>
+  );
+};
 
-function TabsTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+// Content Area
+export const TabsContent = ({
+  value,
+  children,
+  className = "",
+}: {
+  value: string;
+  children: ReactNode;
+  className?: string;
+}) => {
+  const ctx = useContext(TabsContext);
+  if (!ctx) throw new Error("TabsContent must be used within <Tabs>");
+
+  if (ctx.activeTab !== value) return null;
+
   return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
-      className={cn(
-        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function TabsContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
-  return (
-    <TabsPrimitive.Content
-      data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
-      {...props}
-    />
-  )
-}
-
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+    <div
+      className={`px-4 py-3 font-mono text-sm text-gray-800 dark:text-neutral-100 ${className}`}
+    >
+      {children}
+    </div>
+  );
+};

@@ -11,6 +11,7 @@ import {
 } from "@/components/docs-ui/preview";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Step, Steps } from "@/components/ui/steps";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 
 export default function Page() {
@@ -27,8 +28,8 @@ export default function Page() {
           </div> `;
 
   const commands = {
-    pnpm: "pnpm dlx next-forge@latest init",
-    npm: "npx next-forge@latest init",
+    pnpm: "pnpm dlx shadcn@latest  init",
+    npm: "npx shadcn@latest add ",
     yarn: "yarn dlx next-forge@latest init",
     bun: "bunx next-forge@latest init",
   } as const;
@@ -72,6 +73,7 @@ export default function Page() {
 
       <div className="py-10">
         <SubHeading>Installation</SubHeading>
+
         <Steps>
           <Step title="Run the following command">
             <Snippet>
@@ -96,6 +98,8 @@ export default function Page() {
             </Snippet>
           </Step>
         </Steps>
+
+        <SubHeading className="mt-10">Props</SubHeading>
       </div>
     </div>
   );
