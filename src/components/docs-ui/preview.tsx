@@ -111,7 +111,7 @@ export const PreviewContent = ({
   return (
     <div
       className={cn(
-        "absolute inset-0 top-14 flex items-center justify-center rounded-2xl border border-neutral-500 px-4",
+        "absolute inset-0 top-14 flex items-center justify-center rounded-2xl border border-neutral-500 p-2",
         className,
       )}
       {...props}

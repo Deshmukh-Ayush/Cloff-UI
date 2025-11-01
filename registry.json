@@ -13,6 +13,54 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "qr-code-button",
+      "description": "QR Code button with animated qr code card popout with copy button to copy the url which qr carries",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/registry/new-york/items/qr-code/components/qr-code-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "password-strong",
+      "description": "Beautiful Password component which measures the strength of password with a touch of dotted background glowing pattern.",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/registry/new-york/items/password-strong/components/password.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/registry/new-york/items/password-strong/components/dotted-glow-bg.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card-expand",
+      "description": "Animated popover card with image title and description, perfect for landing pages.",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/registry/new-york/items/card-expand/components/card-expand.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pixelated-shader",
+      "description": "Pixelated shader directly on your image with three js",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/registry/new-york/items/pixelated-shader/components/pixelated-shader.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

@@ -2,7 +2,6 @@
 
 import { Newsreader } from "next/font/google";
 import React from "react";
-import GlowButton from "@/components/ui/glow-button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -55,4 +54,3 @@ const FancyButton: React.FC<Props> = ({
     </Link>
   );
 };
-

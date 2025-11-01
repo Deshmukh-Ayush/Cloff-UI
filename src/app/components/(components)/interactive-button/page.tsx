@@ -22,46 +22,116 @@ export default function Page() {
   const [copied, setCopied] = useState(false);
 
   const code = `
-   <div className="text-center">
-            <button className="rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600">
-              Interactive Button
-            </button>
-          </div> `;
+  import React from 'react'
+  import InteractiveButton from @/components/ui/interactive-button.tsx
+  
+  export default function Page() {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <InteractiveButton>Click Me</InteractiveButton>
+      </div>
+    )
+  }
+  
+   `;
+
+  const commands = {
+    pnpm: "pnpm dlx shadcn@latest add https://ui.cloffstudio.com/r/interactive-button.json",
+    npm: "npx shadcn@latest add https://ui.cloffstudio.com/r/interactive-button.json",
+    yarn: "yarn shadcn@latest add https://ui.cloffstudio.com/r/interactive-button.json",
+    bun: "bunx --bun shadcn@latest add https://ui.cloffstudio.com/r/interactive-button.json",
+  } as const;
 
   const propsData = [
     {
       prop: "children",
       type: "React.ReactNode",
-      default: "undefined",
-      description: "The content to be rendered within the gradient background.",
+      default: "Enter",
+      description: "Button lable show in the idle state.",
     },
     {
       prop: "className",
       type: "string",
       default: "undefined",
-      description: "The CSS class to be applied to the inner div.",
+      description: "Additional CSS classes applied to the button wrapper.",
     },
     {
-      prop: "containerClassName",
+      prop: "onClick",
+      type: "(event: MouseEvent<HTMLButtonElement>) => void | Promise<void>",
+      default: "undefined",
+      description:
+        "Click handler (can be async). If it throws/rejects the button goes to failure",
+    },
+    {
+      prop: "loadingText",
+      type: "string",
+      default: "Loading...",
+      description: "Text shown while in loading state.",
+    },
+    {
+      prop: "loadingText",
+      type: "string",
+      default: "Loading...",
+      description: "Text shown while in loading state.",
+    },
+    {
+      prop: "successText",
+      type: "string",
+      default: "Sucess!",
+      description: "Text shown when action succeeds.",
+    },
+    {
+      prop: "failureText",
+      type: "string",
+      default: "Failed!!",
+      description: "Text shown when action failed.",
+    },
+    {
+      prop: "loadingDuration",
+      type: "number (ms)",
+      default: "1500",
+      description:
+        "Delay (ms) after starting loading before switching to success (applied after onClick resolves).",
+    },
+    {
+      prop: "resetDelay",
+      type: "number (ms)",
+      default: "3000",
+      description:
+        "Time (ms) the button stays in success or failure before returning to idle.",
+    },
+    {
+      prop: "enableEnterKey",
+      type: "boolean",
+      default: "false",
+      description:
+        "If true, pressing Enter triggers the button when state is idle",
+    },
+    {
+      prop: "type",
+      type: `"button" | "submit" | "reset"`,
+      default: "button",
+      description: "Native button type attribute.",
+    },
+    {
+      prop: "form",
       type: "string",
       default: "undefined",
-      description: "The CSS class to be applied to the outermost div.",
+      description: "Forwarded form attribute (form id).",
     },
     {
-      prop: "animate",
-      type: "boolean",
-      default: "true",
-      description:
-        "Determines whether the gradient background should animate. If false, the gradient background will be static.",
+      prop: "name",
+      type: "string",
+      default: "undefined",
+      description: "Forwarded name attribute.",
+    },
+    {
+      prop: "value",
+      type: "string",
+      default: "undefined",
+      description: "Forwarded value attribute.",
     },
   ];
-
-  const commands = {
-    pnpm: "pnpm dlx shadcn@latest  init",
-    npm: "npx shadcn@latest add ",
-    yarn: "yarn dlx next-forge@latest init",
-    bun: "bunx next-forge@latest init",
-  } as const;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(commands[activeTab]);
@@ -129,7 +199,7 @@ export default function Page() {
         <SubHeading className="mt-10">Props</SubHeading>
         <PropsTable className="mt-10">
           <PropsTable.Header>
-            <PropsTable.HeaderCell>Prop</PropsTable.HeaderCell>
+            <PropsTable.HeaderCell>Props</PropsTable.HeaderCell>
             <PropsTable.HeaderCell>Type</PropsTable.HeaderCell>
             <PropsTable.HeaderCell>Default</PropsTable.HeaderCell>
             <PropsTable.HeaderCell>Description</PropsTable.HeaderCell>
