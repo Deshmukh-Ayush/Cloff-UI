@@ -14,6 +14,8 @@ import { CodeBlock } from "@/components/ui/code-block";
 import { Step, Steps } from "@/components/ui/steps";
 import { useState } from "react";
 import AIInputDemo from "./_example";
+import Link from "next/link";
+import { OneLiner } from "@/components/docs-ui/one-liner";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"pnpm" | "npm" | "yarn" | "bun">(
@@ -284,6 +286,9 @@ export default function AIInputDemo() {
           </div>
         </PreviewContent>
       </PreviewRoot>
+      <OneLiner href="https://khagwal.com/interactions/">
+        Inspired by Nitesh Khagwal
+      </OneLiner>
 
       <div className="py-10">
         <SubHeading>Installation</SubHeading>
