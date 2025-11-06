@@ -11,36 +11,23 @@ import {
 } from "@/components/docs-ui/preview";
 import { PropsTable } from "@/components/docs-ui/props-table";
 import { CodeBlock } from "@/components/ui/code-block";
-import { Step, Steps } from "@/components/ui/steps";
-import { QRCode } from "@/registry/new-york/items/qr-code/components/qr-code-button";
-import { useState } from "react";
+import { QRCodeDemo, QRCodeInstallation } from "./_example";
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState<"pnpm" | "npm" | "yarn" | "bun">(
-    "npm",
-  );
-  const [copied, setCopied] = useState(false);
-
   const code = `
-  import React from 'react'
-  import { QRCode } from "@/components/ui/qr-code";
+  import { QRCode } from "@/registry/new-york/items/qr-code/components/qr-code-button";
+  import React from "react";
   
-  export default function Page() {
+  export const QRCodeDemo = () => {
     return (
       <div className="min-h-screen w-full flex items-center justify-center">
         <QRCode src="/qr-cloff-ui.png" url="www.cloffstudio.com" />
       </div>
-    )
-  }
+    );
+  };
+  
   
    `;
-
-  const commands = {
-    pnpm: "pnpm dlx shadcn@latest add https://ui.cloffstudio.com/r/qr-code-button.json",
-    npm: "npx shadcn@latest add https://ui.cloffstudio.com/r/qr-code-button.json",
-    yarn: "yarn shadcn@latest add https://ui.cloffstudio.com/r/qr-code-button.json",
-    bun: "bunx --bun shadcn@latest add https://ui.cloffstudio.com/r/qr-code-button.json",
-  } as const;
 
   const propsData = [
     {
@@ -64,11 +51,6 @@ export default function Page() {
     },
   ];
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(commands[activeTab]);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
   return (
     <div>
       <Heading>QR Code Button</Heading>
@@ -83,9 +65,7 @@ export default function Page() {
         </PreviewTabs>
 
         <PreviewContent value="preview">
-          <div className="text-center">
-            <QRCode src="/qr-cloff-ui.png" url="www.cloffstudio.com" />
-          </div>
+          <QRCodeDemo />
         </PreviewContent>
 
         <PreviewContent value="code">
@@ -102,30 +82,7 @@ export default function Page() {
       <div className="py-10">
         <SubHeading>Installation</SubHeading>
 
-        <Steps>
-          <Step title="Run the following command">
-            <Snippet>
-              <Snippet.Header>
-                <Snippet.Tabs>
-                  {(Object.keys(commands) as Array<keyof typeof commands>).map(
-                    (pm) => (
-                      <Snippet.Tab
-                        key={pm}
-                        active={activeTab === pm}
-                        onClick={() => setActiveTab(pm)}
-                      >
-                        {pm}
-                      </Snippet.Tab>
-                    ),
-                  )}
-                </Snippet.Tabs>
-                <Snippet.Action onCopy={handleCopy} copied={copied} />
-              </Snippet.Header>
-
-              <Snippet.Content>{commands[activeTab]}</Snippet.Content>
-            </Snippet>
-          </Step>
-        </Steps>
+        <QRCodeInstallation />
 
         <SubHeading className="mt-10">Props</SubHeading>
         <PropsTable className="mt-10">
