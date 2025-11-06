@@ -21,6 +21,7 @@ export const docsConfig: NavSection[] = [
   {
     title: "Components",
     items: [
+      { title: "AI Input", href: "/components/ai-input" },
       { title: "Interactive Button", href: "/components/interactive-button" },
       { title: "QR Code Button", href: "/components/qr-code-button" },
       { title: "Password Strong", href: "/components/password-strong" },
