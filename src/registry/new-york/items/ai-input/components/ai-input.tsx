@@ -55,7 +55,7 @@ const useAutoResizeTextarea = (
 };
 
 const useCarouselSnap = (
-  items: any[],
+  items: unknown[],
   showPicker: boolean,
   trayRef: React.RefObject<HTMLDivElement | null>,
   itemRefs: React.MutableRefObject<Array<HTMLButtonElement | null>>,
@@ -522,10 +522,12 @@ export const AIInputAgentPicker = ({
         onClick={() => setShowPicker((s) => !s)}
         className="flex h-8 w-8 items-center justify-center rounded-full border-t border-white bg-neutral-100 p-1.5 dark:border-neutral-600 dark:bg-neutral-800"
       >
-        <img
+        <Image
           src={selectedAgent?.src ?? "https://via.placeholder.com/100"}
           alt={selectedAgent?.title ?? "AI Agent"}
-          className="h-full w-full object-contain"
+          width={32}
+          height={32}
+          className="h-full w-full rounded-full object-contain"
         />
       </motion.button>
     </>
