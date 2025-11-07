@@ -82,7 +82,7 @@ export const PreviewTab = ({
       className={cn(
         "text-md mr-2 rounded-md px-5 py-2 text-neutral-900 transition-colors dark:text-neutral-100",
         isActive
-          ? "bg-neutral-900 font-medium text-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
+          ? "border-t border-r border-neutral-600 bg-neutral-900 font-medium text-neutral-100 dark:border-neutral-200 dark:bg-neutral-100 dark:text-neutral-900"
           : "hover:bg-neutral-300 active:bg-neutral-500",
         className,
       )}

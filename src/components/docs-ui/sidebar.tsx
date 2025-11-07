@@ -9,7 +9,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="bg-background fixed top-0 left-0 z-30 h-screen w-54">
+    <aside className="bg-background fixed top-0 left-0 z-30 h-screen w-60">
       <div className="h-full overflow-y-auto px-6 py-26">
         {/* Navigation */}
         <nav className="space-y-6">

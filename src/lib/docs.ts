@@ -23,11 +23,28 @@ export const docsConfig: NavSection[] = [
     title: "Components",
     items: [
       { title: "AI Input", href: "/components/ai-input", label: "beta" },
-      { title: "Interactive Button", href: "/components/interactive-button" },
-      { title: "QR Code Button", href: "/components/qr-code-button" },
-      { title: "Password Strong", href: "/components/password-strong" },
-      { title: "Card Expand", href: "/components/card-expand" },
-      { title: "Pixelated Shader", href: "/components/pixelated-shader" },
+      {
+        title: "Interactive Button",
+        href: "/components/interactive-button",
+        label: "beta",
+      },
+      {
+        title: "QR Code Button",
+        href: "/components/qr-code-button",
+        label: "beta",
+      },
+      {
+        title: "Password Strong",
+        href: "/components/password-strong",
+        label: "beta",
+      },
+      { title: "Card Expand", href: "/components/card-expand", label: "beta" },
+      { title: "Resend Card", href: "/components/resend-card", label: "beta" },
+      {
+        title: "Pixelated Shader",
+        href: "/components/pixelated-shader",
+        label: "beta",
+      },
     ],
   },
 ];

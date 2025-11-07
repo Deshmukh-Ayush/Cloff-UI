@@ -23,8 +23,7 @@ export default function Page() {
   );
   const [copied, setCopied] = useState(false);
 
-  const code = `
-  "use client";
+  const code = `"use client";
 
 import {
   AIInput,
