@@ -34,6 +34,11 @@ export const docsConfig: NavSection[] = [
         label: "beta",
       },
       {
+        title: "Calendar Widget",
+        href: "/components/calendar-widget",
+        label: "beta",
+      },
+      {
         title: "Password Strong",
         href: "/components/password-strong",
         label: "beta",
