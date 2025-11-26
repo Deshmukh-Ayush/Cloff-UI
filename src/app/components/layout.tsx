@@ -11,7 +11,7 @@ export default function ComponentsLayout({
       <Sidebar />
 
       {/* Main Content */}
-      <main className="mt-16 ml-52 flex-1 dark:bg-black">
+      <main className="mt-16 ml-56 flex-1 dark:bg-black">
         <div className="container max-w-4xl px-8 py-10">{children}</div>
       </main>
     </div>

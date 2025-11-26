@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
 interface AvatarItem {
@@ -22,7 +23,10 @@ export const AvatarStack = ({
 }: AvatarStackProps) => {
   return (
     <div
-      className={`group flex flex-col items-center justify-center ${className}`}
+      className={cn(
+        "group flex flex-col items-center justify-center",
+        className,
+      )}
     >
       <motion.div
         className="relative flex h-16 w-full cursor-pointer items-center justify-center"

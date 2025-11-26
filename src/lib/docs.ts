@@ -24,6 +24,11 @@ export const docsConfig: NavSection[] = [
     items: [
       { title: "AI Input", href: "/components/ai-input", label: "beta" },
       {
+        title: "Avatar Stack",
+        href: "/components/avatar-stack",
+        label: "beta",
+      },
+      {
         title: "Interactive Button",
         href: "/components/interactive-button",
         label: "beta",
