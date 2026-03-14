@@ -1,9 +1,17 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, AnimatePresence, useMotionValue, animate } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  animate,
+  PanInfo,
+  HTMLMotionProps,
+} from "motion/react";
 import useMeasure from "react-use-measure";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 // ============================================================================
 // TYPES
@@ -17,6 +25,72 @@ interface Logo {
 interface DropdownOption {
   label: string;
   value: string;
+}
+
+// ============================================================================
+// PROGRESSIVE BLUR COMPONENT
+// ============================================================================
+
+const GRADIENT_ANGLES = {
+  top: 0,
+  right: 90,
+  bottom: 180,
+  left: 270,
+};
+
+type ProgressiveBlurProps = {
+  direction?: keyof typeof GRADIENT_ANGLES;
+  blurLayers?: number;
+  className?: string;
+  blurIntensity?: number;
+} & HTMLMotionProps<"div">;
+
+function ProgressiveBlur({
+  direction = "bottom",
+  blurLayers = 8,
+  className,
+  blurIntensity = 0.25,
+  ...props
+}: ProgressiveBlurProps) {
+  const layers = Math.max(blurLayers, 2);
+  const segmentSize = 1 / (blurLayers + 1);
+
+  return (
+    <div className={cn("relative", className)}>
+      {Array.from({ length: layers }).map((_, index) => {
+        const angle = GRADIENT_ANGLES[direction];
+        const gradientStops = [
+          index * segmentSize,
+          (index + 1) * segmentSize,
+          (index + 2) * segmentSize,
+          (index + 3) * segmentSize,
+        ].map(
+          (pos, posIndex) =>
+            `rgba(255, 255, 255, ${
+              posIndex === 1 || posIndex === 2 ? 1 : 0
+            }) ${pos * 100}%`,
+        );
+
+        const gradient = `linear-gradient(${angle}deg, ${gradientStops.join(
+          ", ",
+        )})`;
+
+        return (
+          <motion.div
+            key={index}
+            className="pointer-events-none absolute inset-0 rounded-[inherit]"
+            style={{
+              maskImage: gradient,
+              WebkitMaskImage: gradient,
+              backdropFilter: `blur(${index * blurIntensity}px)`,
+              WebkitBackdropFilter: `blur(${index * blurIntensity}px)`,
+            }}
+            {...props}
+          />
+        );
+      })}
+    </div>
+  );
 }
 
 // ============================================================================
@@ -52,60 +126,6 @@ const useAutoResizeTextarea = (
   }, [ref]);
 
   return handleInput;
-};
-
-const useCarouselSnap = (
-  items: unknown[],
-  showPicker: boolean,
-  trayRef: React.RefObject<HTMLDivElement | null>,
-  itemRefs: React.MutableRefObject<Array<HTMLButtonElement | null>>,
-) => {
-  const x = useMotionValue(0);
-  const dragStarted = useRef(false);
-  const [constraints, setConstraints] = useState({ left: 0, right: 0 });
-  const [snapPoints, setSnapPoints] = useState<number[]>([]);
-
-  const snapToNearest = () => {
-    if (!snapPoints.length) return;
-    const current = x.get();
-    const target = snapPoints.reduce(
-      (p, c) => (Math.abs(c - current) < Math.abs(p - current) ? c : p),
-      snapPoints[0],
-    );
-    animate(x, target, { type: "spring", stiffness: 400, damping: 45 });
-  };
-
-  useEffect(() => {
-    if (!showPicker) return;
-
-    const timeout = setTimeout(() => {
-      const viewport = trayRef.current;
-      if (!viewport) return;
-      const viewportW = viewport.clientWidth;
-
-      const rects = itemRefs.current
-        .map((el) => el?.getBoundingClientRect())
-        .filter(Boolean) as DOMRect[];
-
-      if (!rects.length) return;
-
-      const itemW = rects[0].width;
-      const stride = rects[1] ? rects[1].left - rects[0].left : itemW;
-      const totalW = stride * (items.length - 1) + itemW;
-
-      const left = Math.min(0, viewportW - totalW);
-      setConstraints({ left, right: 0 });
-
-      const points = items.map((_, i) => -i * stride + (viewportW - itemW) / 2);
-      setSnapPoints(points);
-
-      x.set(points[0] ?? 0);
-    }, 50);
-
-    return () => clearTimeout(timeout);
-  }, [showPicker, items.length, trayRef, itemRefs]);
-
-  return { x, constraints, dragStarted, snapToNearest };
 };
 
 const useClickOutside = (
@@ -226,7 +246,7 @@ export const AIInput = ({ children }: { children: React.ReactNode }) => {
         bounce: 0.2,
         duration: 0.6,
       }}
-      className="relative w-100"
+      className="relative w-full"
     >
       <div ref={measureRef}>
         <div className="flex w-full flex-col rounded-3xl bg-gray-200 px-2 py-2 dark:bg-neutral-900">
@@ -271,13 +291,13 @@ export const AIInputTextarea = ({
       textareaRef.current.value = value;
       handleInput();
     }
-  }, [value]);
+  }, [value, handleInput]);
 
   return (
     <div className="w-full py-1">
       <textarea
         ref={textareaRef}
-        className="w-full resize-none rounded-lg px-3 py-2 outline-none"
+        className="w-full resize-none rounded-lg bg-transparent px-3 py-2 outline-none"
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         rows={1}
@@ -436,15 +456,17 @@ export const AIInputAgentPicker = ({
   const [selectedAgent, setSelectedAgent] = useState<Logo | null>(
     defaultAgent || null,
   );
-  const trayRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
-  const { x, constraints, dragStarted, snapToNearest } = useCarouselSnap(
-    agents,
-    showPicker,
-    trayRef,
-    itemRefs,
-  );
+  const [trayRef, bounds] = useMeasure();
+  const x = useMotionValue(0);
+  const dragStarted = useRef(false);
+
+  const GAP = 8;
+  const ITEM_WIDTH = 40;
+
+  const totalWidth = agents.length * ITEM_WIDTH + (agents.length - 1) * GAP;
+  const maxDrag = 0;
+  const minDrag = Math.min(0, bounds.width - totalWidth - 24);
 
   const handleAgentSelect = (agent: Logo) => {
     if (!dragStarted.current) {
@@ -454,59 +476,77 @@ export const AIInputAgentPicker = ({
     }
   };
 
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
+    setTimeout(() => {
+      dragStarted.current = false;
+    }, 50);
+
+    const velocity = info.velocity.x;
+    const offset = x.get();
+
+    const target = offset + velocity * 0.2;
+
+    const clamped = Math.max(Math.min(target, maxDrag), minDrag);
+
+    animate(x, clamped, { type: "spring", stiffness: 400, damping: 40 });
+  };
+
+  useEffect(() => {
+    if (showPicker) x.set(0);
+  }, [showPicker, x]);
+
   return (
-    <>
+    <div className="relative">
       <AnimatePresence initial={false}>
         {showPicker && (
           <motion.div
-            className="absolute mb-18 ml-30 flex h-8 w-16 gap-2 rounded-2xl bg-gray-300 backdrop-blur-xs dark:bg-neutral-800"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
+            className="absolute bottom-full left-0 mb-4 flex h-12 w-26 overflow-hidden rounded-4xl border border-white/20 bg-gray-300 backdrop-blur-md dark:bg-neutral-800"
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2 }}
-            style={{ pointerEvents: showPicker ? "auto" : "none" }}
           >
-            <div
-              ref={trayRef}
-              className="relative h-full w-full"
-              style={{ overflow: "hidden" }}
-            >
+            {/* Added Progressive Blur - Left */}
+            <ProgressiveBlur
+              className="pointer-events-none absolute top-0 left-0 z-10 h-full w-10"
+              direction="left"
+              blurIntensity={0.5}
+            />
+
+            {/* Added Progressive Blur - Right */}
+            <ProgressiveBlur
+              className="pointer-events-none absolute top-0 right-0 z-10 h-full w-10"
+              direction="right"
+              blurIntensity={0.5}
+            />
+
+            <div ref={trayRef} className="flex h-full w-full items-center px-3">
               <motion.div
                 drag="x"
-                dragDirectionLock
-                dragElastic={0.15}
-                dragMomentum={false}
-                dragTransition={{
-                  bounceStiffness: 200,
-                  bounceDamping: 25,
-                }}
-                dragConstraints={constraints}
-                style={{ x, willChange: "transform" }}
+                dragConstraints={{ left: minDrag, right: maxDrag }}
+                dragElastic={0.1}
+                style={{ x, gap: GAP, touchAction: "none" }}
                 onDragStart={() => {
                   dragStarted.current = true;
                 }}
-                onDragEnd={() => {
-                  requestAnimationFrame(() => snapToNearest());
-                  setTimeout(() => (dragStarted.current = false), 80);
-                }}
-                className="flex h-full items-center"
+                onDragEnd={handleDragEnd}
+                className="flex items-center"
               >
-                {agents.map((agent, i) => (
+                {agents.map((agent) => (
                   <button
                     key={agent.title}
-                    ref={(el) => {
-                      itemRefs.current[i] = el;
-                    }}
                     onPointerUp={() => handleAgentSelect(agent)}
-                    className="flex h-full w-full shrink-0 items-center justify-center"
-                    style={{ touchAction: "none" }}
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl hover:bg-black/5 dark:hover:bg-white/10"
                   >
                     <Image
                       src={agent.src}
                       alt={agent.title}
-                      height={100}
-                      width={100}
-                      className="pointer-events-none h-20 w-20"
+                      height={24}
+                      width={24}
+                      className="pointer-events-none h-6 w-6 object-contain"
                     />
                   </button>
                 ))}
@@ -522,15 +562,13 @@ export const AIInputAgentPicker = ({
         onClick={() => setShowPicker((s) => !s)}
         className="flex h-8 w-8 items-center justify-center rounded-full border-t border-white bg-neutral-100 p-1.5 dark:border-neutral-600 dark:bg-neutral-800"
       >
-        <Image
+        <img
           src={selectedAgent?.src ?? "https://via.placeholder.com/100"}
           alt={selectedAgent?.title ?? "AI Agent"}
-          width={32}
-          height={32}
-          className="h-full w-full rounded-full object-contain"
+          className="h-full w-full object-contain"
         />
       </motion.button>
-    </>
+    </div>
   );
 };
 
@@ -549,7 +587,7 @@ export const AIInputSubmitButton = ({
       whileTap={!disabled ? { scale: 0.95 } : {}}
       onClick={!disabled ? onClick : undefined}
       disabled={disabled}
-      className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-950"
+      className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-950 text-white"
       style={{ opacity: disabled ? 0.5 : 1 }}
     >
       <AnimatePresence mode="wait">
