@@ -25,7 +25,7 @@ export const Hero = () => {
         your website interactive and seamless.
       </p>
 
-      <FancyButton href="/" variant className="mt-10">
+      <FancyButton href="/components" variant className="mt-10">
         Browse Components
       </FancyButton>
     </div>
